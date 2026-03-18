@@ -10,6 +10,33 @@
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin=""/>
     <link rel="stylesheet" href="styles.css">
+    <style>
+        .lang-switcher {
+            display: flex;
+            align-items: center;
+            gap: 3px;
+            margin-right: 10px;
+        }
+        .lang-btn {
+            background: none;
+            border: 1px solid transparent;
+            cursor: pointer;
+            font-size: 1.25rem;
+            line-height: 1;
+            padding: 3px 5px;
+            border-radius: 4px;
+            opacity: 0.45;
+            transition: opacity .2s, border-color .2s, background .2s;
+        }
+        .lang-btn:hover {
+            opacity: 0.85;
+        }
+        .lang-btn.active {
+            opacity: 1;
+            border-color: rgba(37,244,37,0.5);
+            background: rgba(37,244,37,0.08);
+        }
+    </style>
 </head>
 <body>
 
@@ -45,11 +72,15 @@
 
         <!-- Navigation -->
         <nav class="header-nav" id="header-nav">
-            <a href="#" class="nav-link active">OVERVIEW</a>
-            <a href="#" class="nav-link">MAP</a>
-            <a href="#" class="nav-link">LOGS</a>
-            <a href="#" class="nav-link">BASES</a>
-            <a href="#" class="nav-link">CONFIG</a>
+            <div class="lang-switcher">
+                <button class="lang-btn active" data-lang="en" onclick="setLanguage('en')" title="English">🇬🇧</button>
+                <button class="lang-btn" data-lang="sr" onclick="setLanguage('sr')" title="Srpski">🇷🇸</button>
+            </div>
+            <a href="#" class="nav-link active" data-i18n="nav_overview">OVERVIEW</a>
+            <a href="#" class="nav-link" data-i18n="nav_map">MAP</a>
+            <a href="#" class="nav-link" data-i18n="nav_logs">LOGS</a>
+            <a href="#" class="nav-link" data-i18n="nav_bases">BASES</a>
+            <a href="#" class="nav-link" data-i18n="nav_config">CONFIG</a>
         </nav>
 
         <!-- User Profile -->
@@ -80,7 +111,7 @@
              LEFT SIDEBAR — Battlefield Facility Systems
              ================================================ -->
         <aside class="panel panel-left" id="panel-systems">
-            <div class="panel-label">BATTLEFIELD FACILITY SYSTEMS</div>
+            <div class="panel-label" data-i18n="panel_systems">BATTLEFIELD FACILITY SYSTEMS</div>
             <div class="systems-list">
 
                 <!-- Artillery Battery -->
@@ -89,17 +120,17 @@
                         <span class="material-symbols-outlined system-icon primary">navigation</span>
                         <div class="system-info">
                             <div class="system-title-row">
-                                <span class="system-name">Artillery Battery</span>
-                                <span class="badge badge-primary">STABLE</span>
+                                <span class="system-name" data-i18n="sys_artillery_name">Artillery Battery</span>
+                                <span class="badge badge-primary" data-i18n="sys_artillery_badge">STABLE</span>
                             </div>
-                            <p class="system-value primary">READY</p>
+                            <p class="system-value primary" data-i18n="sys_artillery_value">READY</p>
                         </div>
                     </div>
                     <div class="progress-bar">
                         <div class="progress-fill primary" style="width:100%"></div>
                     </div>
                     <div class="progress-labels">
-                        <span>LOAD STATUS</span><span>100% READY</span>
+                        <span data-i18n="sys_artillery_label1">LOAD STATUS</span><span data-i18n="sys_artillery_label2">100% READY</span>
                     </div>
                 </div>
 
@@ -109,17 +140,17 @@
                         <span class="material-symbols-outlined system-icon orange">model_training</span>
                         <div class="system-info">
                             <div class="system-title-row">
-                                <span class="system-name">Advanced Training Polygon</span>
-                                <span class="badge badge-orange">TRAINING</span>
+                                <span class="system-name" data-i18n="sys_training_name">Advanced Training Polygon</span>
+                                <span class="badge badge-orange" data-i18n="sys_training_badge">TRAINING</span>
                             </div>
-                            <p class="system-value orange">50% FASTER TRAINING</p>
+                            <p class="system-value orange" data-i18n="sys_training_value">50% FASTER TRAINING</p>
                         </div>
                     </div>
                     <div class="progress-bar">
                         <div class="progress-fill orange" style="width:65%"></div>
                     </div>
                     <div class="progress-labels orange-labels">
-                        <span>COMPLETION</span><span>65%</span>
+                        <span data-i18n="sys_training_label1">COMPLETION</span><span>65%</span>
                     </div>
                 </div>
 
@@ -129,17 +160,17 @@
                         <span class="material-symbols-outlined system-icon primary">hub</span>
                         <div class="system-info">
                             <div class="system-title-row">
-                                <span class="system-name">Information Center</span>
-                                <span class="badge badge-primary">SYNCING</span>
+                                <span class="system-name" data-i18n="sys_info_name">Information Center</span>
+                                <span class="badge badge-primary" data-i18n="sys_info_badge">SYNCING</span>
                             </div>
-                            <p class="system-value primary">ACTIVE</p>
+                            <p class="system-value primary" data-i18n="sys_info_value">ACTIVE</p>
                         </div>
                     </div>
                     <div class="progress-bar">
                         <div class="progress-fill primary" style="width:88%"></div>
                     </div>
                     <div class="progress-labels">
-                        <span>DATALINK</span><span>88% CAP</span>
+                        <span data-i18n="sys_info_label1">DATALINK</span><span data-i18n="sys_info_label2">88% CAP</span>
                     </div>
                 </div>
 
@@ -149,17 +180,17 @@
                         <span class="material-symbols-outlined system-icon orange">group_work</span>
                         <div class="system-info">
                             <div class="system-title-row">
-                                <span class="system-name">Conscription Hub</span>
-                                <span class="badge badge-orange">ENROLLING</span>
+                                <span class="system-name" data-i18n="sys_conscription_name">Conscription Hub</span>
+                                <span class="badge badge-orange" data-i18n="sys_conscription_badge">ENROLLING</span>
                             </div>
-                            <p class="system-value orange">20% / 20min</p>
+                            <p class="system-value orange" data-i18n="sys_conscription_value">20% / 20min</p>
                         </div>
                     </div>
                     <div class="progress-bar">
                         <div class="progress-fill orange" style="width:20%"></div>
                     </div>
                     <div class="progress-labels orange-labels">
-                        <span>PROCESS</span><span>20%</span>
+                        <span data-i18n="sys_conscription_label1">PROCESS</span><span>20%</span>
                     </div>
                 </div>
 
@@ -169,17 +200,17 @@
                         <span class="material-symbols-outlined system-icon primary">radar</span>
                         <div class="system-info">
                             <div class="system-title-row">
-                                <span class="system-name">Air Defense</span>
-                                <span class="badge badge-primary">ENGAGED</span>
+                                <span class="system-name" data-i18n="sys_airdefense_name">Air Defense</span>
+                                <span class="badge badge-primary" data-i18n="sys_airdefense_badge">ENGAGED</span>
                             </div>
-                            <p class="system-value primary">NOMINAL</p>
+                            <p class="system-value primary" data-i18n="sys_airdefense_value">NOMINAL</p>
                         </div>
                     </div>
                     <div class="progress-bar">
                         <div class="progress-fill primary" style="width:100%"></div>
                     </div>
                     <div class="progress-labels">
-                        <span>PROTECTION</span><span>100%</span>
+                        <span data-i18n="sys_airdefense_label1">PROTECTION</span><span>100%</span>
                     </div>
                 </div>
 
@@ -213,7 +244,7 @@
             <div class="map-info-bar">
                 <span>MAP_LAYER: TACTICAL_GRID_04</span>
                 <span class="bar-divider">|</span>
-                <span>TEAM COUNT: 24 UNITS</span>
+                <span data-i18n="map_teamcount">TEAM COUNT: 24 UNITS</span>
             </div>
 
             <!-- Zoom controls -->
@@ -232,14 +263,14 @@
             <!-- Stats overlay -->
             <div class="map-stats-overlay">
                 <div class="map-stat">
-                    <p class="map-stat-label">Operational Assets</p>
+                    <p class="map-stat-label" data-i18n="map_stat_assets">Operational Assets</p>
                     <p class="map-stat-value" id="ops-assets-value">875</p>
-                    <p class="map-stat-sub">TEAM COUNT: 24 UNITS</p>
+                    <p class="map-stat-sub" data-i18n="map_teamcount">TEAM COUNT: 24 UNITS</p>
                 </div>
                 <div class="map-stat text-right">
-                    <p class="map-stat-label">Combat Readiness</p>
+                    <p class="map-stat-label" data-i18n="map_stat_readiness">Combat Readiness</p>
                     <p class="map-stat-value" id="combat-readiness-value">87.5%</p>
-                    <p class="map-stat-sub" id="combat-readiness-sub">HIGH MORALE</p>
+                    <p class="map-stat-sub" id="combat-readiness-sub" data-i18n="readiness_high">HIGH MORALE</p>
                 </div>
             </div>
         </section><!-- /map-section -->
@@ -251,7 +282,7 @@
 
             <!-- Training Pipeline -->
             <div class="training-pipeline-card">
-                <div class="panel-label">TRAINING PIPELINE</div>
+                <div class="panel-label" data-i18n="pipeline_label">TRAINING PIPELINE</div>
                 <div class="timer-wrap">
                     <svg class="timer-svg" viewBox="0 0 160 160" aria-hidden="true">
                         <circle class="timer-track" cx="80" cy="80" r="70"/>
@@ -264,53 +295,53 @@
                     </svg>
                     <div class="timer-display">
                         <span class="timer-value" id="timer-display">08:42</span>
-                        <span class="timer-label">NEXT_WAVE_ETA</span>
+                        <span class="timer-label" data-i18n="pipeline_eta">NEXT_WAVE_ETA</span>
                     </div>
                 </div>
                 <div class="training-meta">
-                    <p class="training-title">CONSCRIPT TRAINING CYCLE</p>
-                    <p class="training-sub">BASIC FIREARM TRAINING</p>
+                    <p class="training-title" data-i18n="pipeline_title">CONSCRIPT TRAINING CYCLE</p>
+                    <p class="training-sub" data-i18n="pipeline_sub">BASIC FIREARM TRAINING</p>
                 </div>
             </div>
 
             <!-- Unit Deployment -->
             <div class="unit-deployment">
-                <div class="panel-label">UNIT DEPLOYMENT</div>
+                <div class="panel-label" data-i18n="deploy_label">UNIT DEPLOYMENT</div>
                 <div class="deployment-grid">
                     <button class="unit-btn" data-unit="SCOUT" onclick="selectUnit(this)">
                         <span class="material-symbols-outlined">radar</span>
                         <span class="unit-count">01</span>
-                        <span class="unit-type">SCOUT</span>
+                        <span class="unit-type" data-i18n="unit_scout">SCOUT</span>
                     </button>
                     <button class="unit-btn" data-unit="PAIR" onclick="selectUnit(this)">
                         <span class="material-symbols-outlined">group</span>
                         <span class="unit-count">02</span>
-                        <span class="unit-type">PAIR</span>
+                        <span class="unit-type" data-i18n="unit_pair">PAIR</span>
                     </button>
                     <button class="unit-btn" data-unit="FIRETEAM" onclick="selectUnit(this)">
                         <span class="material-symbols-outlined">military_tech</span>
                         <span class="unit-count">05</span>
-                        <span class="unit-type">FIRETEAM</span>
+                        <span class="unit-type" data-i18n="unit_fireteam">FIRETEAM</span>
                     </button>
                     <button class="unit-btn" data-unit="SQUAD" onclick="selectUnit(this)">
                         <span class="material-symbols-outlined">groups</span>
                         <span class="unit-count">10</span>
-                        <span class="unit-type">SQUAD</span>
+                        <span class="unit-type" data-i18n="unit_squad">SQUAD</span>
                     </button>
                     <button class="unit-btn" data-unit="PLATOON" onclick="selectUnit(this)">
                         <span class="material-symbols-outlined">shield</span>
                         <span class="unit-count">20</span>
-                        <span class="unit-type">PLATOON</span>
+                        <span class="unit-type" data-i18n="unit_platoon">PLATOON</span>
                     </button>
                     <button class="unit-btn" data-unit="COMPANY" onclick="selectUnit(this)">
                         <span class="material-symbols-outlined">account_balance</span>
                         <span class="unit-count">50</span>
-                        <span class="unit-type">COMPANY</span>
+                        <span class="unit-type" data-i18n="unit_company">COMPANY</span>
                     </button>
                 </div>
 
                 <button class="deploy-btn" id="deploy-btn" onclick="triggerDeploy()">
-                    <span class="deploy-text">INITIATE DEPLOYMENT</span>
+                    <span class="deploy-text" data-i18n="deploy_btn">INITIATE DEPLOYMENT</span>
                     <div class="deploy-dots">
                         <span class="deploy-dot" style="animation-delay:.1s"></span>
                         <span class="deploy-dot" style="animation-delay:.2s"></span>
@@ -339,7 +370,7 @@
 
         <div class="domination-panel">
             <div class="domination-header">
-                <span class="domination-label">GROUND DOMINATION</span>
+                <span class="domination-label" data-i18n="footer_domination">GROUND DOMINATION</span>
                 <span class="dom-indicator">
                     <span class="dom-dot-ring"></span>
                     <span class="dom-dot"></span>
@@ -381,19 +412,19 @@
 <nav class="mobile-bottom-nav" id="mobile-bottom-nav" aria-label="Mobile navigation">
     <button class="mob-nav-btn active" data-panel="map" onclick="mobilePanel('map', this)">
         <span class="material-symbols-outlined">map</span>
-        <span>MAP</span>
+        <span data-i18n="mob_map">MAP</span>
     </button>
     <button class="mob-nav-btn" data-panel="systems" onclick="mobilePanel('systems', this)">
         <span class="material-symbols-outlined">settings</span>
-        <span>SYSTEMS</span>
+        <span data-i18n="mob_systems">SYSTEMS</span>
     </button>
     <button class="mob-nav-btn" data-panel="deploy" onclick="mobilePanel('deploy', this)">
         <span class="material-symbols-outlined">send</span>
-        <span>DEPLOY</span>
+        <span data-i18n="mob_deploy">DEPLOY</span>
     </button>
     <button class="mob-nav-btn" data-panel="console" onclick="mobilePanel('console', this)">
         <span class="material-symbols-outlined">terminal</span>
-        <span>CONSOLE</span>
+        <span data-i18n="mob_console">CONSOLE</span>
     </button>
 </nav>
 
@@ -401,6 +432,183 @@
      JAVASCRIPT
      ============================================================ -->
 <script>
+/* -------------------------------------------------------
+   LANGUAGE SWITCHER — translations & i18n engine
+   ------------------------------------------------------- */
+const TRANSLATIONS = {
+    en: {
+        nav_overview:           'OVERVIEW',
+        nav_map:                'MAP',
+        nav_logs:               'LOGS',
+        nav_bases:              'BASES',
+        nav_config:             'CONFIG',
+        panel_systems:          'BATTLEFIELD FACILITY SYSTEMS',
+        sys_artillery_name:     'Artillery Battery',
+        sys_artillery_badge:    'STABLE',
+        sys_artillery_value:    'READY',
+        sys_artillery_label1:   'LOAD STATUS',
+        sys_artillery_label2:   '100% READY',
+        sys_training_name:      'Advanced Training Polygon',
+        sys_training_badge:     'TRAINING',
+        sys_training_value:     '50% FASTER TRAINING',
+        sys_training_label1:    'COMPLETION',
+        sys_info_name:          'Information Center',
+        sys_info_badge:         'SYNCING',
+        sys_info_value:         'ACTIVE',
+        sys_info_label1:        'DATALINK',
+        sys_info_label2:        '88% CAP',
+        sys_conscription_name:  'Conscription Hub',
+        sys_conscription_badge: 'ENROLLING',
+        sys_conscription_value: '20% / 20min',
+        sys_conscription_label1:'PROCESS',
+        sys_airdefense_name:    'Air Defense',
+        sys_airdefense_badge:   'ENGAGED',
+        sys_airdefense_value:   'NOMINAL',
+        sys_airdefense_label1:  'PROTECTION',
+        map_teamcount:          'TEAM COUNT: 24 UNITS',
+        map_stat_assets:        'Operational Assets',
+        map_stat_readiness:     'Combat Readiness',
+        readiness_high:         'HIGH MORALE',
+        readiness_moderate:     'MODERATE READINESS',
+        readiness_low:          'LOW READINESS',
+        readiness_critical:     'CRITICAL',
+        pipeline_label:         'TRAINING PIPELINE',
+        pipeline_eta:           'NEXT_WAVE_ETA',
+        pipeline_title:         'CONSCRIPT TRAINING CYCLE',
+        pipeline_sub:           'BASIC FIREARM TRAINING',
+        deploy_label:           'UNIT DEPLOYMENT',
+        unit_scout:             'SCOUT',
+        unit_pair:              'PAIR',
+        unit_fireteam:          'FIRETEAM',
+        unit_squad:             'SQUAD',
+        unit_platoon:           'PLATOON',
+        unit_company:           'COMPANY',
+        deploy_btn:             'INITIATE DEPLOYMENT',
+        deploy_btn_active:      'DEPLOYING...',
+        footer_domination:      'GROUND DOMINATION',
+        mob_map:                'MAP',
+        mob_systems:            'SYSTEMS',
+        mob_deploy:             'DEPLOY',
+        mob_console:            'CONSOLE',
+        deploy_log:             'DEPLOY_ORDER: [{units}] ({count} UNITS) DISPATCHED TO FIELD — ACKNOWLEDGED',
+    },
+    sr: {
+        nav_overview:           'PREGLED',
+        nav_map:                'KARTA',
+        nav_logs:               'ZAPISI',
+        nav_bases:              'BAZE',
+        nav_config:             'PODEŠAVANJA',
+        panel_systems:          'SISTEMI BOJNOG POLJA',
+        sys_artillery_name:     'Artiljerijska Baterija',
+        sys_artillery_badge:    'STABILNO',
+        sys_artillery_value:    'SPREMAN',
+        sys_artillery_label1:   'STATUS PUNJENJA',
+        sys_artillery_label2:   '100% SPREMAN',
+        sys_training_name:      'Napr. Poligon za Obuku',
+        sys_training_badge:     'OBUKA',
+        sys_training_value:     '50% BRŽA OBUKA',
+        sys_training_label1:    'ZAVRŠETAK',
+        sys_info_name:          'Informacioni Centar',
+        sys_info_badge:         'SINHRONIZ.',
+        sys_info_value:         'AKTIVAN',
+        sys_info_label1:        'VEZA PODATAKA',
+        sys_info_label2:        '88% KAP',
+        sys_conscription_name:  'Centar za Regrutaciju',
+        sys_conscription_badge: 'UPIS',
+        sys_conscription_value: '20% / 20min',
+        sys_conscription_label1:'PROCES',
+        sys_airdefense_name:    'Protuvazdušna Odbrana',
+        sys_airdefense_badge:   'ANGAŽOVAN',
+        sys_airdefense_value:   'NOMINALNO',
+        sys_airdefense_label1:  'ZAŠTITA',
+        map_teamcount:          'BROJ TIMA: 24 JEDINICE',
+        map_stat_assets:        'Operativna Sredstva',
+        map_stat_readiness:     'Borbena Gotovost',
+        readiness_high:         'VISOK MORAL',
+        readiness_moderate:     'UMJERENA GOTOVOST',
+        readiness_low:          'NISKA GOTOVOST',
+        readiness_critical:     'KRITIČNO',
+        pipeline_label:         'OBUKA U TOKU',
+        pipeline_eta:           'SLEDEĆI_VAL_ETA',
+        pipeline_title:         'CIKLUS OBUKE REGRUTA',
+        pipeline_sub:           'OSNOVNA OBUKA SA ORUŽJEM',
+        deploy_label:           'RASPOREĐIVANJE JEDINICA',
+        unit_scout:             'IZVIĐAČ',
+        unit_pair:              'PAR',
+        unit_fireteam:          'VAT. TIM',
+        unit_squad:             'ODELJENJE',
+        unit_platoon:           'VOD',
+        unit_company:           'ČETA',
+        deploy_btn:             'POKRENI RASPOREĐIVANJE',
+        deploy_btn_active:      'RASPOREĐIVANJE...',
+        footer_domination:      'KONTROLA TERENA',
+        mob_map:                'KARTA',
+        mob_systems:            'SISTEMI',
+        mob_deploy:             'RASPOREDI',
+        mob_console:            'KONZOLA',
+        deploy_log:             'NALOG_RASP: [{units}] ({count} JEDINICA) UPUĆENO NA TEREN — POTVRĐENO',
+    }
+};
+
+const AUTO_LOGS = {
+    en: [
+        'HEARTBEAT_CHECK: ALL NODES RESPONDING — 24ms AVG',
+        'INTEL_UPDATE: ENEMY PATROL SPOTTED AT GRID_C7',
+        'SUPPLY_DROP: AMMO CACHE DELIVERED TO UNIT_S_02',
+        'COMMS: ENCRYPTED CHANNEL OPENED ON FREQ 442.150',
+        'RADAR: AIRSPACE CLEAR — NO INBOUND CONTACTS',
+        'SITREP: UNIT_S_01 REQUESTS FIRE SUPPORT AT OBJ_ALPHA',
+        'AUTH_EVENT: PERIMETER SENSOR 7 TRIGGERED — CLEARED',
+        'SYNC: SATELLITE IMAGERY REFRESHED (RES: 0.3m)',
+    ],
+    sr: [
+        'PROVJERA_PULSA: SVI ČVOROVI ODGOVARAJU — 24ms PROSJEK',
+        'INTEL_AŽ: NEPRIJAT. PATROLA PRIMIJEĆENA NA MREŽI_C7',
+        'DOSTAVA_ZALIHA: DEPO MUNICIJE DOSTAVLJEN JEDINICI_S_02',
+        'VEZE: ŠIFROVANI KANAL OTVOREN NA FREQ 442.150',
+        'RADAR: VAZDUŠNI PROSTOR ČIST — NEMA DOLAZNIH KONTAKATA',
+        'SIT_IZV: JED_S_01 TRAŽI VATRENU PODRŠKU NA OBJ_ALPHA',
+        'AUTH_DOG: PERIMETARSKI SENZOR 7 AKTIVIRAN — RAZRIJEŠEN',
+        'SINHR: SATELITSKE SLIKE OSVJEŽENE (RES: 0.3m)',
+    ]
+};
+
+let currentLang = localStorage.getItem('lang') || 'en';
+
+function t(key) {
+    return (TRANSLATIONS[currentLang] && TRANSLATIONS[currentLang][key])
+        || TRANSLATIONS.en[key]
+        || key;
+}
+
+function setLanguage(lang) {
+    currentLang = lang;
+    localStorage.setItem('lang', lang);
+    document.documentElement.lang = lang;
+
+    // Update all static data-i18n elements
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.dataset.i18n;
+        // Don't overwrite the combat-readiness-sub if it was updated dynamically
+        if (el.id === 'combat-readiness-sub') return;
+        el.textContent = t(key);
+    });
+
+    // Sync combat readiness sub-label to current lang
+    updateReadiness();
+
+    // Update flag button active state
+    document.querySelectorAll('.lang-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.lang === lang);
+    });
+
+    // Update deploy button text only if not currently deploying
+    const deployBtn = document.getElementById('deploy-btn');
+    if (deployBtn && !deployBtn.disabled) {
+        deployBtn.querySelector('.deploy-text').textContent = t('deploy_btn');
+    }
+}
+
 /* -------------------------------------------------------
    MOBILE PANEL SWITCHING
    ------------------------------------------------------- */
@@ -511,10 +719,10 @@ let operationalAssets = 875;
 const MAX_ASSETS = 1000;
 
 function readinessLabel(pct) {
-    if (pct >= 80) return 'HIGH MORALE';
-    if (pct >= 50) return 'MODERATE READINESS';
-    if (pct >= 25) return 'LOW READINESS';
-    return 'CRITICAL';
+    if (pct >= 80) return t('readiness_high');
+    if (pct >= 50) return t('readiness_moderate');
+    if (pct >= 25) return t('readiness_low');
+    return t('readiness_critical');
 }
 
 function updateReadiness() {
@@ -538,12 +746,12 @@ function triggerDeploy() {
 
     btn.classList.add('deploying');
     btn.disabled = true;
-    btn.querySelector('.deploy-text').textContent = 'DEPLOYING...';
+    btn.querySelector('.deploy-text').textContent = t('deploy_btn_active');
 
     setTimeout(() => {
         btn.classList.remove('deploying');
         btn.disabled = false;
-        btn.querySelector('.deploy-text').textContent = 'INITIATE DEPLOYMENT';
+        btn.querySelector('.deploy-text').textContent = t('deploy_btn');
 
         // Deduct from operational assets and update both stats
         operationalAssets = Math.max(0, operationalAssets - totalDeployed);
@@ -563,24 +771,16 @@ function triggerDeploy() {
         // Reset all unit buttons
         document.querySelectorAll('.unit-btn.selected').forEach(b => b.classList.remove('selected'));
 
-        addLog(`DEPLOY_ORDER: [${unitNames.join('+')}] (${totalDeployed} UNITS) DISPATCHED TO FIELD — ACKNOWLEDGED`);
+        const logMsg = t('deploy_log')
+            .replace('{units}', unitNames.join('+'))
+            .replace('{count}', totalDeployed);
+        addLog(logMsg);
     }, 2000);
 }
 
 /* -------------------------------------------------------
    ANIMATED CONSOLE LOGS
    ------------------------------------------------------- */
-const AUTO_LOGS = [
-    'HEARTBEAT_CHECK: ALL NODES RESPONDING — 24ms AVG',
-    'INTEL_UPDATE: ENEMY PATROL SPOTTED AT GRID_C7',
-    'SUPPLY_DROP: AMMO CACHE DELIVERED TO UNIT_S_02',
-    'COMMS: ENCRYPTED CHANNEL OPENED ON FREQ 442.150',
-    'RADAR: AIRSPACE CLEAR — NO INBOUND CONTACTS',
-    'SITREP: UNIT_S_01 REQUESTS FIRE SUPPORT AT OBJ_ALPHA',
-    'AUTH_EVENT: PERIMETER SENSOR 7 TRIGGERED — CLEARED',
-    'SYNC: SATELLITE IMAGERY REFRESHED (RES: 0.3m)',
-];
-
 function addLog(msg) {
     const container = document.getElementById('console-logs');
     const p = document.createElement('p');
@@ -598,7 +798,8 @@ function addLog(msg) {
 // Auto log every 8 seconds
 let autoLogIdx = 0;
 setInterval(() => {
-    addLog(AUTO_LOGS[autoLogIdx % AUTO_LOGS.length]);
+    const logs = AUTO_LOGS[currentLang] || AUTO_LOGS.en;
+    addLog(logs[autoLogIdx % logs.length]);
     autoLogIdx++;
 }, 8000);
 
@@ -612,6 +813,9 @@ document.querySelectorAll('.nav-link').forEach(link => {
         link.classList.add('active');
     });
 });
+
+// Apply saved language on load (static HTML elements only at this point)
+setLanguage(currentLang);
 </script>
 
 <!-- Leaflet JS (loaded after main script so map init runs last) -->
@@ -725,11 +929,11 @@ L.polyline([ARES_POS, SINDIKAT_POS], {
 
 /* ---- BATTLEFIELD SYSTEMS ---- */
 const SYSTEMS = [
-    { name: 'Artillery Battery',       icon: 'navigation'    },
-    { name: 'Adv. Training Polygon',   icon: 'model_training'},
-    { name: 'Information Center',      icon: 'hub'           },
-    { name: 'Conscription Hub',        icon: 'group_work'    },
-    { name: 'Air Defense',             icon: 'radar'         },
+    { nameKey: 'sys_artillery_name',     name: 'Artillery Battery',       icon: 'navigation'    },
+    { nameKey: 'sys_training_name',      name: 'Adv. Training Polygon',   icon: 'model_training'},
+    { nameKey: 'sys_info_name',          name: 'Information Center',      icon: 'hub'           },
+    { nameKey: 'sys_conscription_name',  name: 'Conscription Hub',        icon: 'group_work'    },
+    { nameKey: 'sys_airdefense_name',    name: 'Air Defense',             icon: 'radar'         },
 ];
 
 SYSTEMS.forEach((sys, i) => {
@@ -737,7 +941,7 @@ SYSTEMS.forEach((sys, i) => {
     const icon = divIcon(`
         <div class="tac-sys">
             <span class="material-symbols-outlined tac-sys__icon">${sys.icon}</span>
-            <div class="tac-sys__label">${sys.name}</div>
+            <div class="tac-sys__label" data-i18n="${sys.nameKey}">${sys.name}</div>
         </div>`, [18, 18]);
     const marker = L.marker(pos, { icon }).addTo(tacticalMap);
     marker.bindTooltip(sys.name, {
@@ -779,6 +983,9 @@ window.addEventListener('resize', () => tacticalMap.invalidateSize());
 document.getElementById('mobile-bottom-nav').addEventListener('click', () => {
     setTimeout(() => tacticalMap.invalidateSize(), 80);
 });
+
+// Apply language to map marker labels (added to DOM by Leaflet above)
+setLanguage(currentLang);
 </script>
 </body>
 </html>
