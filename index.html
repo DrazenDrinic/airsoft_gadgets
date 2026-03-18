@@ -629,11 +629,43 @@ const tacticalMap = L.map('leaflet-map', {
     scrollWheelZoom: false,
 });
 
-// CartoDB Dark Matter tiles
+// CartoDB Dark Matter tiles (base — always visible)
 L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
     maxZoom: 19,
     subdomains: 'abcd',
 }).addTo(tacticalMap);
+
+// Bright Voyager layer — revealed only where the radar sweep passes
+tacticalMap.createPane('radarRevealPane');
+const radarRevealPane = tacticalMap.getPane('radarRevealPane');
+radarRevealPane.style.zIndex = 201;
+radarRevealPane.style.pointerEvents = 'none';
+
+L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+    maxZoom: 19,
+    subdomains: 'abcd',
+    pane: 'radarRevealPane',
+}).addTo(tacticalMap);
+
+// Sync mask to the CSS radar-sweep animation via rAF
+const SWEEP_MS   = 5000;
+const sweepElem  = document.querySelector('.map-radar-sweep');
+
+(function animateRadarReveal() {
+    let angle = 0;
+    const anims = sweepElem.getAnimations();
+    const anim  = anims.find(a => a.animationName === 'radar-sweep');
+    if (anim && anim.currentTime != null) {
+        angle = ((anim.currentTime % SWEEP_MS) / SWEEP_MS) * 360;
+    }
+    // Mask shape mirrors the conic gradient on .map-radar-sweep:
+    // transparent in the "past" arc, fading to opaque at the leading edge
+    const grad = `conic-gradient(from ${angle.toFixed(1)}deg,`
+               + ` transparent 65%, rgba(0,0,0,0.35) 80%, black 95%, black 100%)`;
+    radarRevealPane.style.maskImage       = grad;
+    radarRevealPane.style.webkitMaskImage = grad;
+    requestAnimationFrame(animateRadarReveal);
+}());
 
 L.control.attribution({ prefix: false, position: 'bottomright' })
     .addAttribution('© <a href="https://carto.com/">CARTO</a> © <a href="https://www.openstreetmap.org/copyright">OSM</a>')
