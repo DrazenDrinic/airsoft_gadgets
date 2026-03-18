@@ -15,9 +15,12 @@
             display: flex;
             align-items: center;
             gap: 3px;
-            margin-right: 10px;
+            margin-left: auto;
         }
         .lang-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
             background: none;
             border: 1px solid transparent;
             cursor: pointer;
@@ -70,12 +73,14 @@
             </div>
         </div>
 
+        <!-- Language switcher -->
+        <div class="lang-switcher">
+            <button class="lang-btn active" data-lang="en" onclick="setLanguage('en')" title="English">🇬🇧</button>
+            <button class="lang-btn" data-lang="sr" onclick="setLanguage('sr')" title="Srpski">🇷🇸</button>
+        </div>
+
         <!-- Navigation -->
         <nav class="header-nav" id="header-nav">
-            <div class="lang-switcher">
-                <button class="lang-btn active" data-lang="en" onclick="setLanguage('en')" title="English">🇬🇧</button>
-                <button class="lang-btn" data-lang="sr" onclick="setLanguage('sr')" title="Srpski">🇷🇸</button>
-            </div>
             <a href="#" class="nav-link active" data-i18n="nav_overview">OVERVIEW</a>
             <a href="#" class="nav-link" data-i18n="nav_map">MAP</a>
             <a href="#" class="nav-link" data-i18n="nav_logs">LOGS</a>

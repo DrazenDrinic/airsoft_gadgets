@@ -159,8 +159,8 @@ button { font-family: var(--font); cursor: pointer; border: none; background: no
 /* Nav */
 .header-nav {
     display: flex;
+    align-items: center;
     gap: 1.25rem;
-    margin-left: auto;
     padding-left: 1.25rem;
     border-left: 1px solid var(--primary-20);
     flex-shrink: 0;
