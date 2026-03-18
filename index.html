@@ -11,6 +11,12 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin=""/>
     <link rel="stylesheet" href="styles.css">
     <style>
+        .brand-logo {
+            height: 44px;
+            width: 44px;
+            object-fit: contain;
+            flex-shrink: 0;
+        }
         .lang-switcher {
             display: flex;
             align-items: center;
@@ -24,12 +30,14 @@
             background: none;
             border: 1px solid transparent;
             cursor: pointer;
-            font-size: 1.25rem;
-            line-height: 1;
             padding: 3px 5px;
             border-radius: 4px;
             opacity: 0.45;
             transition: opacity .2s, border-color .2s, background .2s;
+        }
+        .lang-btn img {
+            display: block;
+            border-radius: 2px;
         }
         .lang-btn:hover {
             opacity: 0.85;
@@ -54,7 +62,7 @@
     <header class="app-header">
         <!-- Brand -->
         <div class="header-brand">
-            <span class="material-symbols-outlined brand-icon">shield_with_heart</span>
+            <img src="logo.png" alt="Airsoft Gadgets" class="brand-logo">
             <div class="brand-text">
                 <h1 class="brand-title">ASK ARES COMMAND</h1>
                 <p class="brand-sub">SYS_VER: 4.0.92-STABLE // ENCRYPTION: AES-512</p>
@@ -75,8 +83,12 @@
 
         <!-- Language switcher -->
         <div class="lang-switcher">
-            <button class="lang-btn active" data-lang="en" onclick="setLanguage('en')" title="English">🇬🇧</button>
-            <button class="lang-btn" data-lang="sr" onclick="setLanguage('sr')" title="Srpski">🇷🇸</button>
+            <button class="lang-btn active" data-lang="en" onclick="setLanguage('en')" title="English">
+                <img src="https://flagcdn.com/24x18/gb.png" alt="English" width="24" height="18">
+            </button>
+            <button class="lang-btn" data-lang="sr" onclick="setLanguage('sr')" title="Srpski">
+                <img src="https://flagcdn.com/24x18/rs.png" alt="Srpski" width="24" height="18">
+            </button>
         </div>
 
         <!-- Navigation -->
