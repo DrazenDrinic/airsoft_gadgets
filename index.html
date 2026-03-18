@@ -233,7 +233,7 @@
             <div class="map-stats-overlay">
                 <div class="map-stat">
                     <p class="map-stat-label">Operational Assets</p>
-                    <p class="map-stat-value">875</p>
+                    <p class="map-stat-value" id="ops-assets-value">875</p>
                     <p class="map-stat-sub">TEAM COUNT: 24 UNITS</p>
                 </div>
                 <div class="map-stat text-right">
@@ -497,23 +497,30 @@ function updateTimer() {
 setInterval(updateTimer, 1000);
 
 /* -------------------------------------------------------
-   UNIT SELECTION
+   UNIT SELECTION (multi-toggle)
    ------------------------------------------------------- */
 function selectUnit(btn) {
-    document.querySelectorAll('.unit-btn').forEach(b => b.classList.remove('selected'));
-    btn.classList.add('selected');
+    btn.classList.toggle('selected');
 }
 
 /* -------------------------------------------------------
    DEPLOY BUTTON
    ------------------------------------------------------- */
-let selectedUnit = null;
 let logIndex = 6;
+let operationalAssets = 875;
 
 function triggerDeploy() {
     const btn = document.getElementById('deploy-btn');
-    const selected = document.querySelector('.unit-btn.selected');
-    const unitName = selected ? selected.dataset.unit : 'UNASSIGNED';
+    const selectedBtns = document.querySelectorAll('.unit-btn.selected');
+    if (selectedBtns.length === 0) return;
+
+    // Sum up all selected unit counts
+    let totalDeployed = 0;
+    const unitNames = [];
+    selectedBtns.forEach(b => {
+        totalDeployed += parseInt(b.querySelector('.unit-count').textContent, 10);
+        unitNames.push(b.dataset.unit);
+    });
 
     btn.classList.add('deploying');
     btn.disabled = true;
@@ -524,8 +531,17 @@ function triggerDeploy() {
         btn.disabled = false;
         btn.querySelector('.deploy-text').textContent = 'INITIATE DEPLOYMENT';
 
-        // Add log entry
-        addLog(`DEPLOY_ORDER: ${unitName} DISPATCHED TO FIELD — ACKNOWLEDGED`);
+        // Deduct from operational assets
+        operationalAssets = Math.max(0, operationalAssets - totalDeployed);
+        const assetsEl = document.getElementById('ops-assets-value');
+        assetsEl.textContent = operationalAssets;
+        assetsEl.classList.add('assets-depleted');
+        setTimeout(() => assetsEl.classList.remove('assets-depleted'), 2500);
+
+        // Reset all unit buttons
+        document.querySelectorAll('.unit-btn.selected').forEach(b => b.classList.remove('selected'));
+
+        addLog(`DEPLOY_ORDER: [${unitNames.join('+')}] (${totalDeployed} UNITS) DISPATCHED TO FIELD — ACKNOWLEDGED`);
     }, 2000);
 }
 
