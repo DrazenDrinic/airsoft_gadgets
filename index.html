@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ASK ARES Command Center — V2.0</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin=""/>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<!-- ========================================================
+     APP SHELL
+     ======================================================== -->
+<div class="app-shell">
+
+    <!-- ====================================================
+         HEADER
+         ==================================================== -->
+    <header class="app-header">
+        <!-- Brand -->
+        <div class="header-brand">
+            <span class="material-symbols-outlined brand-icon">shield_with_heart</span>
+            <div class="brand-text">
+                <h1 class="brand-title">ASK ARES COMMAND</h1>
+                <p class="brand-sub">SYS_VER: 4.0.92-STABLE // ENCRYPTION: AES-512</p>
+            </div>
+        </div>
+
+        <!-- Status (hidden on mobile) -->
+        <div class="header-status">
+            <div class="status-gps">
+                <span class="status-dot pulse-anim"></span>
+                GPS: 44.9791° N, 16.7102° E (SECTOR 7)
+            </div>
+            <div class="status-links">
+                <span>SAT_LINK: <strong>ACTIVE</strong></span>
+                <span>TIME: <strong id="uptime-display">--:--:--</strong></span>
+            </div>
+        </div>
+
+        <!-- Navigation -->
+        <nav class="header-nav" id="header-nav">
+            <a href="#" class="nav-link active">OVERVIEW</a>
+            <a href="#" class="nav-link">MAP</a>
+            <a href="#" class="nav-link">LOGS</a>
+            <a href="#" class="nav-link">BASES</a>
+            <a href="#" class="nav-link">CONFIG</a>
+        </nav>
+
+        <!-- User Profile -->
+        <div class="header-user">
+            <div class="user-info">
+                <p class="user-name">COL. M. DARKO</p>
+                <p class="user-role">CMD_OFFICER</p>
+            </div>
+            <div class="user-avatar">
+                <img
+                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuDQSu_mcW3aEx6-vBG2PwJ5BW8MWkolXrdPkN3H6l33dHjxbFSHaMtep4ClW9JRvFu4vkasW2kerDEu_BipdiAX_StIkA0W0C3PuKiUH0wTn1YaUxrAOqrlR_j6nskBo-o77N5YAqP5EJANQwY8B5kFo5xstBVNbR_yTyOS15ozkUNQ0afB0XTlDLy5xTRSQHX0rXznG0E9-YHCD0JlSWoGPPjxAilwRb7Ab7s93UVuEHLHyuhYySj1DJZegxGCEse9ZLJj36zTGgQ"
+                    alt="COL. M. DARKO">
+            </div>
+        </div>
+
+        <!-- Hamburger (mobile only) -->
+        <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Toggle navigation">
+            <span class="material-symbols-outlined">menu</span>
+        </button>
+    </header>
+
+    <!-- ====================================================
+         MAIN WORKSPACE
+         ==================================================== -->
+    <main class="app-main">
+
+        <!-- ================================================
+             LEFT SIDEBAR — Battlefield Facility Systems
+             ================================================ -->
+        <aside class="panel panel-left" id="panel-systems">
+            <div class="panel-label">BATTLEFIELD FACILITY SYSTEMS</div>
+            <div class="systems-list">
+
+                <!-- Artillery Battery -->
+                <div class="system-card">
+                    <div class="system-card-header">
+                        <span class="material-symbols-outlined system-icon primary">navigation</span>
+                        <div class="system-info">
+                            <div class="system-title-row">
+                                <span class="system-name">Artillery Battery</span>
+                                <span class="badge badge-primary">STABLE</span>
+                            </div>
+                            <p class="system-value primary">READY</p>
+                        </div>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill primary" style="width:100%"></div>
+                    </div>
+                    <div class="progress-labels">
+                        <span>LOAD STATUS</span><span>100% READY</span>
+                    </div>
+                </div>
+
+                <!-- Advanced Training Polygon -->
+                <div class="system-card">
+                    <div class="system-card-header">
+                        <span class="material-symbols-outlined system-icon orange">model_training</span>
+                        <div class="system-info">
+                            <div class="system-title-row">
+                                <span class="system-name">Advanced Training Polygon</span>
+                                <span class="badge badge-orange">TRAINING</span>
+                            </div>
+                            <p class="system-value orange">50% FASTER TRAINING</p>
+                        </div>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill orange" style="width:65%"></div>
+                    </div>
+                    <div class="progress-labels orange-labels">
+                        <span>COMPLETION</span><span>65%</span>
+                    </div>
+                </div>
+
+                <!-- Information Center -->
+                <div class="system-card">
+                    <div class="system-card-header">
+                        <span class="material-symbols-outlined system-icon primary">hub</span>
+                        <div class="system-info">
+                            <div class="system-title-row">
+                                <span class="system-name">Information Center</span>
+                                <span class="badge badge-primary">SYNCING</span>
+                            </div>
+                            <p class="system-value primary">ACTIVE</p>
+                        </div>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill primary" style="width:88%"></div>
+                    </div>
+                    <div class="progress-labels">
+                        <span>DATALINK</span><span>88% CAP</span>
+                    </div>
+                </div>
+
+                <!-- Conscription Hub -->
+                <div class="system-card">
+                    <div class="system-card-header">
+                        <span class="material-symbols-outlined system-icon orange">group_work</span>
+                        <div class="system-info">
+                            <div class="system-title-row">
+                                <span class="system-name">Conscription Hub</span>
+                                <span class="badge badge-orange">ENROLLING</span>
+                            </div>
+                            <p class="system-value orange">20% / 20min</p>
+                        </div>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill orange" style="width:20%"></div>
+                    </div>
+                    <div class="progress-labels orange-labels">
+                        <span>PROCESS</span><span>20%</span>
+                    </div>
+                </div>
+
+                <!-- Air Defense -->
+                <div class="system-card">
+                    <div class="system-card-header">
+                        <span class="material-symbols-outlined system-icon primary">radar</span>
+                        <div class="system-info">
+                            <div class="system-title-row">
+                                <span class="system-name">Air Defense</span>
+                                <span class="badge badge-primary">ENGAGED</span>
+                            </div>
+                            <p class="system-value primary">NOMINAL</p>
+                        </div>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill primary" style="width:100%"></div>
+                    </div>
+                    <div class="progress-labels">
+                        <span>PROTECTION</span><span>100%</span>
+                    </div>
+                </div>
+
+            </div><!-- /systems-list -->
+        </aside><!-- /panel-left -->
+
+        <!-- ================================================
+             CENTER — Strategic Tactical Map
+             ================================================ -->
+        <section class="map-section" id="panel-map">
+            <!-- BASE LAYER: Leaflet fills the entire section -->
+            <div id="leaflet-map"></div>
+
+            <!-- OVERLAY LAYER: dot-grid, radar sweep, grid border (pointer-events:none) -->
+            <div class="map-overlay">
+                <div class="map-radar-sweep"></div>
+                <div class="map-grid-border"></div>
+                <div class="coord-overlay">
+                    <span class="coord-item" id="coord-lat">LAT: 44.9791</span>
+                    <span class="coord-item" id="coord-lng">LNG: 16.7102</span>
+                </div>
+            </div>
+
+            <!-- SECTOR LABELS — pinned to corners of the grid border, above Leaflet -->
+            <div class="sector-label tl">SEC_ALPHA</div>
+            <div class="sector-label tr">SEC_DELTA</div>
+            <div class="sector-label bl">SEC_BRAVO</div>
+            <div class="sector-label br">SEC_OMEGA</div>
+
+            <!-- Info bar -->
+            <div class="map-info-bar">
+                <span>MAP_LAYER: TACTICAL_GRID_04</span>
+                <span class="bar-divider">|</span>
+                <span>TEAM COUNT: 24 UNITS</span>
+            </div>
+
+            <!-- Zoom controls -->
+            <div class="map-controls">
+                <button class="map-btn" id="btn-zoom-in" aria-label="Zoom in">
+                    <span class="material-symbols-outlined">add</span>
+                </button>
+                <button class="map-btn" id="btn-zoom-out" aria-label="Zoom out">
+                    <span class="material-symbols-outlined">remove</span>
+                </button>
+                <button class="map-btn" id="btn-recenter" aria-label="Recenter">
+                    <span class="material-symbols-outlined">my_location</span>
+                </button>
+            </div>
+
+            <!-- Stats overlay -->
+            <div class="map-stats-overlay">
+                <div class="map-stat">
+                    <p class="map-stat-label">Operational Assets</p>
+                    <p class="map-stat-value">875</p>
+                    <p class="map-stat-sub">TEAM COUNT: 24 UNITS</p>
+                </div>
+                <div class="map-stat text-right">
+                    <p class="map-stat-label">Combat Readiness</p>
+                    <p class="map-stat-value">92.4%</p>
+                    <p class="map-stat-sub">HIGH MORALE</p>
+                </div>
+            </div>
+        </section><!-- /map-section -->
+
+        <!-- ================================================
+             RIGHT SIDEBAR — Deployment Control
+             ================================================ -->
+        <aside class="panel panel-right" id="panel-deploy">
+
+            <!-- Training Pipeline -->
+            <div class="training-pipeline-card">
+                <div class="panel-label">TRAINING PIPELINE</div>
+                <div class="timer-wrap">
+                    <svg class="timer-svg" viewBox="0 0 160 160" aria-hidden="true">
+                        <circle class="timer-track" cx="80" cy="80" r="70"/>
+                        <circle
+                            class="timer-progress"
+                            cx="80" cy="80" r="70"
+                            stroke-dasharray="440"
+                            stroke-dashoffset="110"
+                            id="timer-circle"/>
+                    </svg>
+                    <div class="timer-display">
+                        <span class="timer-value" id="timer-display">08:42</span>
+                        <span class="timer-label">NEXT_WAVE_ETA</span>
+                    </div>
+                </div>
+                <div class="training-meta">
+                    <p class="training-title">CONSCRIPT TRAINING CYCLE</p>
+                    <p class="training-sub">BASIC FIREARM TRAINING</p>
+                </div>
+            </div>
+
+            <!-- Unit Deployment -->
+            <div class="unit-deployment">
+                <div class="panel-label">UNIT DEPLOYMENT</div>
+                <div class="deployment-grid">
+                    <button class="unit-btn" data-unit="SCOUT" onclick="selectUnit(this)">
+                        <span class="material-symbols-outlined">radar</span>
+                        <span class="unit-count">01</span>
+                        <span class="unit-type">SCOUT</span>
+                    </button>
+                    <button class="unit-btn" data-unit="PAIR" onclick="selectUnit(this)">
+                        <span class="material-symbols-outlined">group</span>
+                        <span class="unit-count">02</span>
+                        <span class="unit-type">PAIR</span>
+                    </button>
+                    <button class="unit-btn" data-unit="FIRETEAM" onclick="selectUnit(this)">
+                        <span class="material-symbols-outlined">military_tech</span>
+                        <span class="unit-count">05</span>
+                        <span class="unit-type">FIRETEAM</span>
+                    </button>
+                    <button class="unit-btn" data-unit="SQUAD" onclick="selectUnit(this)">
+                        <span class="material-symbols-outlined">groups</span>
+                        <span class="unit-count">10</span>
+                        <span class="unit-type">SQUAD</span>
+                    </button>
+                    <button class="unit-btn" data-unit="PLATOON" onclick="selectUnit(this)">
+                        <span class="material-symbols-outlined">shield</span>
+                        <span class="unit-count">20</span>
+                        <span class="unit-type">PLATOON</span>
+                    </button>
+                    <button class="unit-btn" data-unit="COMPANY" onclick="selectUnit(this)">
+                        <span class="material-symbols-outlined">account_balance</span>
+                        <span class="unit-count">50</span>
+                        <span class="unit-type">COMPANY</span>
+                    </button>
+                </div>
+
+                <button class="deploy-btn" id="deploy-btn" onclick="triggerDeploy()">
+                    <span class="deploy-text">INITIATE DEPLOYMENT</span>
+                    <div class="deploy-dots">
+                        <span class="deploy-dot" style="animation-delay:.1s"></span>
+                        <span class="deploy-dot" style="animation-delay:.2s"></span>
+                        <span class="deploy-dot" style="animation-delay:.3s"></span>
+                    </div>
+                </button>
+            </div>
+
+        </aside><!-- /panel-right -->
+    </main>
+
+    <!-- ====================================================
+         FOOTER — Tactical Console
+         ==================================================== -->
+    <footer class="app-footer" id="panel-console">
+        <div class="console-icon">
+            <span class="material-symbols-outlined pulse-anim">terminal</span>
+        </div>
+        <div class="console-logs" id="console-logs">
+            <p class="log-line">&gt; [LOG_001] SYSCALL: ENCRYPTION_HANDSHAKE: OK...</p>
+            <p class="log-line">&gt; [LOG_002] TACTICAL_GRID_SYNC: COMPLETED (LATENCY: 12ms)</p>
+            <p class="log-line">&gt; [LOG_003] SAT_LINK_V4: RE-ESTABLISHED SIGNAL WITH PHOENIX-II</p>
+            <p class="log-line log-highlight">&gt; [LOG_004] AUTH_REQ: COLONEL_DRAKE: BIOMETRIC_PASSED</p>
+            <p class="log-line log-muted">&gt; [LOG_005] BACKGROUND_SCAN: 0 THREATS DETECTED IN LOCAL BUFFER</p>
+        </div>
+
+        <div class="domination-panel">
+            <div class="domination-header">
+                <span class="domination-label">GROUND DOMINATION</span>
+                <span class="dom-indicator">
+                    <span class="dom-dot-ring"></span>
+                    <span class="dom-dot"></span>
+                </span>
+            </div>
+            <div class="domination-body">
+                <div>
+                    <p class="domination-pts">76 / 150 PTS</p>
+                    <p class="domination-pct">50.6% CONTROL</p>
+                </div>
+                <span class="material-symbols-outlined dom-icon">leaderboard</span>
+            </div>
+            <div class="domination-bar">
+                <div class="domination-fill" style="width:50.6%"></div>
+            </div>
+        </div>
+
+        <div class="sys-stats-panel">
+            <div class="sys-stat-row">
+                <span>CPU_LOAD</span><span>42%</span>
+            </div>
+            <div class="sys-bar">
+                <div class="sys-bar-fill" style="width:42%"></div>
+            </div>
+            <div class="sys-stat-row" style="margin-top:.5rem">
+                <span>MEM_USED</span><span>1.2TB</span>
+            </div>
+            <div class="sys-bar">
+                <div class="sys-bar-fill" style="width:60%"></div>
+            </div>
+        </div>
+    </footer>
+
+</div><!-- /app-shell -->
+
+<!-- ============================================================
+     MOBILE BOTTOM NAVIGATION
+     ============================================================ -->
+<nav class="mobile-bottom-nav" id="mobile-bottom-nav" aria-label="Mobile navigation">
+    <button class="mob-nav-btn active" data-panel="map" onclick="mobilePanel('map', this)">
+        <span class="material-symbols-outlined">map</span>
+        <span>MAP</span>
+    </button>
+    <button class="mob-nav-btn" data-panel="systems" onclick="mobilePanel('systems', this)">
+        <span class="material-symbols-outlined">settings</span>
+        <span>SYSTEMS</span>
+    </button>
+    <button class="mob-nav-btn" data-panel="deploy" onclick="mobilePanel('deploy', this)">
+        <span class="material-symbols-outlined">send</span>
+        <span>DEPLOY</span>
+    </button>
+    <button class="mob-nav-btn" data-panel="console" onclick="mobilePanel('console', this)">
+        <span class="material-symbols-outlined">terminal</span>
+        <span>CONSOLE</span>
+    </button>
+</nav>
+
+<!-- ============================================================
+     JAVASCRIPT
+     ============================================================ -->
+<script>
+/* -------------------------------------------------------
+   MOBILE PANEL SWITCHING
+   ------------------------------------------------------- */
+const PANEL_MAP = {
+    map:     'panel-map',
+    systems: 'panel-systems',
+    deploy:  'panel-deploy',
+    console: 'panel-console'
+};
+
+function isMobile() {
+    return window.innerWidth < 1024;
+}
+
+function mobilePanel(key, btn) {
+    if (!isMobile()) return;
+
+    // Update nav buttons
+    document.querySelectorAll('.mob-nav-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+
+    // Hide / show panels
+    Object.values(PANEL_MAP).forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.classList.remove('mob-visible');
+    });
+    const target = document.getElementById(PANEL_MAP[key]);
+    if (target) target.classList.add('mob-visible');
+}
+
+function initMobile() {
+    if (!isMobile()) return;
+    // Show map by default
+    Object.values(PANEL_MAP).forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.classList.remove('mob-visible');
+    });
+    document.getElementById(PANEL_MAP.map).classList.add('mob-visible');
+    document.querySelector('.mob-nav-btn[data-panel="map"]').classList.add('active');
+}
+
+window.addEventListener('resize', () => {
+    if (!isMobile()) {
+        // Clear mobile classes on desktop
+        Object.values(PANEL_MAP).forEach(id => {
+            const el = document.getElementById(id);
+            if (el) el.classList.remove('mob-visible');
+        });
+    } else {
+        initMobile();
+    }
+});
+
+initMobile();
+
+/* -------------------------------------------------------
+   MOBILE HAMBURGER MENU
+   ------------------------------------------------------- */
+document.getElementById('mobile-menu-btn').addEventListener('click', () => {
+    document.getElementById('header-nav').classList.toggle('open');
+});
+
+/* -------------------------------------------------------
+   LIVE CURRENT TIME CLOCK
+   ------------------------------------------------------- */
+const uptimeEl = document.getElementById('uptime-display');
+function updateClock() {
+    const now = new Date();
+    const h = now.getHours().toString().padStart(2, '0');
+    const m = now.getMinutes().toString().padStart(2, '0');
+    const s = now.getSeconds().toString().padStart(2, '0');
+    uptimeEl.textContent = `${h}:${m}:${s}`;
+}
+updateClock();
+setInterval(updateClock, 1000);
+
+/* -------------------------------------------------------
+   LIVE TRAINING TIMER (COUNTDOWN)
+   ------------------------------------------------------- */
+const CYCLE_SECS = 20 * 60; // 20-minute cycle
+let timerSecs = 8 * 60 + 42;
+const timerDisp = document.getElementById('timer-display');
+const timerCircle = document.getElementById('timer-circle');
+
+function updateTimer() {
+    timerSecs = timerSecs > 0 ? timerSecs - 1 : CYCLE_SECS;
+    const m = Math.floor(timerSecs / 60).toString().padStart(2, '0');
+    const s = (timerSecs % 60).toString().padStart(2, '0');
+    timerDisp.textContent = `${m}:${s}`;
+    // Update SVG arc: circumference ≈ 440
+    const progress = timerSecs / CYCLE_SECS;
+    timerCircle.style.strokeDashoffset = (440 * (1 - progress)).toFixed(1);
+}
+setInterval(updateTimer, 1000);
+
+/* -------------------------------------------------------
+   UNIT SELECTION
+   ------------------------------------------------------- */
+function selectUnit(btn) {
+    document.querySelectorAll('.unit-btn').forEach(b => b.classList.remove('selected'));
+    btn.classList.add('selected');
+}
+
+/* -------------------------------------------------------
+   DEPLOY BUTTON
+   ------------------------------------------------------- */
+let selectedUnit = null;
+let logIndex = 6;
+
+function triggerDeploy() {
+    const btn = document.getElementById('deploy-btn');
+    const selected = document.querySelector('.unit-btn.selected');
+    const unitName = selected ? selected.dataset.unit : 'UNASSIGNED';
+
+    btn.classList.add('deploying');
+    btn.disabled = true;
+    btn.querySelector('.deploy-text').textContent = 'DEPLOYING...';
+
+    setTimeout(() => {
+        btn.classList.remove('deploying');
+        btn.disabled = false;
+        btn.querySelector('.deploy-text').textContent = 'INITIATE DEPLOYMENT';
+
+        // Add log entry
+        addLog(`DEPLOY_ORDER: ${unitName} DISPATCHED TO FIELD — ACKNOWLEDGED`);
+    }, 2000);
+}
+
+/* -------------------------------------------------------
+   ANIMATED CONSOLE LOGS
+   ------------------------------------------------------- */
+const AUTO_LOGS = [
+    'HEARTBEAT_CHECK: ALL NODES RESPONDING — 24ms AVG',
+    'INTEL_UPDATE: ENEMY PATROL SPOTTED AT GRID_C7',
+    'SUPPLY_DROP: AMMO CACHE DELIVERED TO UNIT_S_02',
+    'COMMS: ENCRYPTED CHANNEL OPENED ON FREQ 442.150',
+    'RADAR: AIRSPACE CLEAR — NO INBOUND CONTACTS',
+    'SITREP: UNIT_S_01 REQUESTS FIRE SUPPORT AT OBJ_ALPHA',
+    'AUTH_EVENT: PERIMETER SENSOR 7 TRIGGERED — CLEARED',
+    'SYNC: SATELLITE IMAGERY REFRESHED (RES: 0.3m)',
+];
+
+function addLog(msg) {
+    const container = document.getElementById('console-logs');
+    const p = document.createElement('p');
+    p.className = 'log-line log-new';
+    p.textContent = `> [LOG_${String(logIndex++).padStart(3,'0')}] ${msg}`;
+    container.appendChild(p);
+    container.scrollTop = container.scrollHeight;
+    // Limit log lines
+    while (container.children.length > 10) {
+        container.removeChild(container.firstChild);
+    }
+    setTimeout(() => p.classList.remove('log-new'), 600);
+}
+
+// Auto log every 8 seconds
+let autoLogIdx = 0;
+setInterval(() => {
+    addLog(AUTO_LOGS[autoLogIdx % AUTO_LOGS.length]);
+    autoLogIdx++;
+}, 8000);
+
+/* -------------------------------------------------------
+   NAV LINK ACTIVE STATE
+   ------------------------------------------------------- */
+document.querySelectorAll('.nav-link').forEach(link => {
+    link.addEventListener('click', e => {
+        e.preventDefault();
+        document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+        link.classList.add('active');
+    });
+});
+</script>
+
+<!-- Leaflet JS (loaded after main script so map init runs last) -->
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+<script>
+/* -------------------------------------------------------
+   LEAFLET MAP — PRIJEDOR
+   44.9829° N, 16.7014° E  (from the Google Maps share link)
+   ------------------------------------------------------- */
+
+// Two command HQs on opposite sides of Prijedor
+const ARES_POS     = [44.948, 16.648];   // SW — ASK ARES COMMAND
+const SINDIKAT_POS = [45.014, 16.762];   // NE — ASK SINDIKAT COMMAND
+
+// Five battlefield systems spaced evenly along the line between commands
+function lerp(a, b, t) { return [a[0] + (b[0]-a[0])*t, a[1] + (b[1]-a[1])*t]; }
+
+// Scattered manually — each system placed at a tactically interesting
+// spot between the two HQs, offset north/south of the direct line.
+const SYS_POSITIONS = [
+    [44.995, 16.671],   // Artillery Battery    — far NW, on a hill
+    [44.963, 16.731],   // Adv. Training Polygon — SE, near river bend
+    [44.983, 16.706],   // Information Center   — city centre (Prijedor)
+    [44.970, 16.676],   // Conscription Hub     — SW outskirts
+    [45.003, 16.740],   // Air Defense          — NE ridge line
+];
+
+// Map centred between the two HQs, zoomed to show both + city
+const MAP_CENTER = lerp(ARES_POS, SINDIKAT_POS, 0.5);
+
+const tacticalMap = L.map('leaflet-map', {
+    center: MAP_CENTER,
+    zoom: 12,
+    zoomControl: false,
+    attributionControl: false,
+    dragging: true,
+    scrollWheelZoom: false,
+});
+
+// CartoDB Dark Matter tiles
+L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+    maxZoom: 19,
+    subdomains: 'abcd',
+}).addTo(tacticalMap);
+
+L.control.attribution({ prefix: false, position: 'bottomright' })
+    .addAttribution('© <a href="https://carto.com/">CARTO</a> © <a href="https://www.openstreetmap.org/copyright">OSM</a>')
+    .addTo(tacticalMap);
+
+/* ---- helper: build a divIcon using Material Symbols ---- */
+function divIcon(html, anchor) {
+    return L.divIcon({ className: '', html, iconAnchor: anchor || [0, 0] });
+}
+
+/* ---- COMMAND MARKERS ---- */
+const aresIcon = divIcon(`
+    <div class="tac-cmd tac-cmd--green">
+        <div class="tac-cmd__pulse"></div>
+        <span class="material-symbols-outlined tac-cmd__icon">shield_with_heart</span>
+        <div class="tac-cmd__label">ASK ARES COMMAND</div>
+    </div>`, [20, 20]);
+
+const sindikatIcon = divIcon(`
+    <div class="tac-cmd tac-cmd--red">
+        <div class="tac-cmd__pulse"></div>
+        <span class="material-symbols-outlined tac-cmd__icon">castle</span>
+        <div class="tac-cmd__label">ASK SINDIKAT COMMAND</div>
+    </div>`, [20, 20]);
+
+L.marker(ARES_POS,     { icon: aresIcon     }).addTo(tacticalMap);
+L.marker(SINDIKAT_POS, { icon: sindikatIcon }).addTo(tacticalMap);
+
+/* ---- FRONTLINE dashed line ---- */
+L.polyline([ARES_POS, SINDIKAT_POS], {
+    color: 'rgba(37,244,37,0.35)',
+    weight: 1.5,
+    dashArray: '6 8',
+}).addTo(tacticalMap);
+
+/* ---- BATTLEFIELD SYSTEMS ---- */
+const SYSTEMS = [
+    { name: 'Artillery Battery',       icon: 'navigation'    },
+    { name: 'Adv. Training Polygon',   icon: 'model_training'},
+    { name: 'Information Center',      icon: 'hub'           },
+    { name: 'Conscription Hub',        icon: 'group_work'    },
+    { name: 'Air Defense',             icon: 'radar'         },
+];
+
+SYSTEMS.forEach((sys, i) => {
+    const pos = SYS_POSITIONS[i];
+    const icon = divIcon(`
+        <div class="tac-sys">
+            <span class="material-symbols-outlined tac-sys__icon">${sys.icon}</span>
+            <div class="tac-sys__label">${sys.name}</div>
+        </div>`, [18, 18]);
+    const marker = L.marker(pos, { icon }).addTo(tacticalMap);
+    marker.bindTooltip(sys.name, {
+        className: 'tac-tooltip',
+        direction: 'top',
+        offset: [0, -12],
+        permanent: false,
+    });
+});
+
+/* ---- city label for Prijedor ---- */
+L.marker([44.9798, 16.7096], {
+    icon: divIcon(`<div class="tac-city-label">● PRIJEDOR</div>`, [0, 0])
+}).addTo(tacticalMap);
+
+/* ---- custom zoom / recenter buttons ---- */
+document.getElementById('btn-zoom-in').addEventListener('click',  () => tacticalMap.zoomIn());
+document.getElementById('btn-zoom-out').addEventListener('click', () => tacticalMap.zoomOut());
+document.getElementById('btn-recenter').addEventListener('click', () => {
+    tacticalMap.setView(MAP_CENTER, 12);
+});
+
+/* ---- live coordinate readout ---- */
+tacticalMap.on('mousemove', e => {
+    document.getElementById('coord-lat').textContent = 'LAT: ' + e.latlng.lat.toFixed(4);
+    document.getElementById('coord-lng').textContent = 'LNG: ' + e.latlng.lng.toFixed(4);
+});
+
+/* ---- force correct size after layout renders ---- */
+// First call: after JS event loop clears
+setTimeout(() => tacticalMap.invalidateSize(), 0);
+// Second call: after CSS transitions settle
+setTimeout(() => tacticalMap.invalidateSize(), 300);
+
+// Re-measure on window resize
+window.addEventListener('resize', () => tacticalMap.invalidateSize());
+
+// Re-measure when mobile tab switches to map panel
+document.getElementById('mobile-bottom-nav').addEventListener('click', () => {
+    setTimeout(() => tacticalMap.invalidateSize(), 80);
+});
+</script>
+</body>
+</html>
