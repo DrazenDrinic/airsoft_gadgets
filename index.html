@@ -238,8 +238,8 @@
                 </div>
                 <div class="map-stat text-right">
                     <p class="map-stat-label">Combat Readiness</p>
-                    <p class="map-stat-value">92.4%</p>
-                    <p class="map-stat-sub">HIGH MORALE</p>
+                    <p class="map-stat-value" id="combat-readiness-value">87.5%</p>
+                    <p class="map-stat-sub" id="combat-readiness-sub">HIGH MORALE</p>
                 </div>
             </div>
         </section><!-- /map-section -->
@@ -508,6 +508,20 @@ function selectUnit(btn) {
    ------------------------------------------------------- */
 let logIndex = 6;
 let operationalAssets = 875;
+const MAX_ASSETS = 1000;
+
+function readinessLabel(pct) {
+    if (pct >= 80) return 'HIGH MORALE';
+    if (pct >= 50) return 'MODERATE READINESS';
+    if (pct >= 25) return 'LOW READINESS';
+    return 'CRITICAL';
+}
+
+function updateReadiness() {
+    const pct = (operationalAssets / MAX_ASSETS) * 100;
+    document.getElementById('combat-readiness-value').textContent = pct.toFixed(1) + '%';
+    document.getElementById('combat-readiness-sub').textContent = readinessLabel(pct);
+}
 
 function triggerDeploy() {
     const btn = document.getElementById('deploy-btn');
@@ -531,12 +545,20 @@ function triggerDeploy() {
         btn.disabled = false;
         btn.querySelector('.deploy-text').textContent = 'INITIATE DEPLOYMENT';
 
-        // Deduct from operational assets
+        // Deduct from operational assets and update both stats
         operationalAssets = Math.max(0, operationalAssets - totalDeployed);
-        const assetsEl = document.getElementById('ops-assets-value');
+
+        const assetsEl    = document.getElementById('ops-assets-value');
+        const readinessEl = document.getElementById('combat-readiness-value');
         assetsEl.textContent = operationalAssets;
+        updateReadiness();
+
         assetsEl.classList.add('assets-depleted');
-        setTimeout(() => assetsEl.classList.remove('assets-depleted'), 2500);
+        readinessEl.classList.add('assets-depleted');
+        setTimeout(() => {
+            assetsEl.classList.remove('assets-depleted');
+            readinessEl.classList.remove('assets-depleted');
+        }, 2500);
 
         // Reset all unit buttons
         document.querySelectorAll('.unit-btn.selected').forEach(b => b.classList.remove('selected'));
