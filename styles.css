@@ -608,9 +608,11 @@ button { font-family: var(--font); cursor: pointer; border: none; background: no
 /* Radar sweep */
 .map-radar-sweep {
     position: absolute;
-    inset: 0;
-    margin: auto;
-    width: min(85cqw, 85cqh);
+    bottom: 0;
+    left: 50%;
+    transform-origin: center center;
+    translate: -50% 50%;
+    width: max(230cqw, 230cqh);
     aspect-ratio: 1 / 1;
     background: conic-gradient(
         from 0deg,

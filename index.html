@@ -903,7 +903,7 @@ const darkVeil  = document.getElementById('map-dark-veil');
         angle = ((anim.currentTime % SWEEP_MS) / SWEEP_MS) * 360;
     }
     // Veil is opaque (dark) ahead of the sweep; transparent (satellite visible) behind it
-    const grad = `conic-gradient(from ${angle.toFixed(1)}deg,`
+    const grad = `conic-gradient(from ${angle.toFixed(1)}deg at 50% 100%,`
                + ` rgba(0,0,0,1) 60%, rgba(0,0,0,0.5) 75%, rgba(0,0,0,0) 92%, rgba(0,0,0,0) 100%)`;
     darkVeil.style.maskImage       = grad;
     darkVeil.style.webkitMaskImage = grad;
