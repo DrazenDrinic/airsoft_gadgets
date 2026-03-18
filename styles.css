@@ -618,7 +618,7 @@ button { font-family: var(--font); cursor: pointer; border: none; background: no
         rgba(37, 244, 37, 0.06) 85%,
         rgba(37, 244, 37, 0.12) 100%
     );
-    animation: radar-sweep 5s linear infinite;
+    animation: radar-sweep 10s linear infinite;
     pointer-events: none;
     border-radius: 50%;
 }

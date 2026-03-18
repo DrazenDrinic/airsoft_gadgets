@@ -11,6 +11,15 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin=""/>
     <link rel="stylesheet" href="styles.css">
     <style>
+        #map-dark-veil {
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.80);
+            pointer-events: none;
+            z-index: 2;
+            -webkit-mask-mode: alpha;
+            mask-mode: alpha;
+        }
         .brand-logo {
             height: 44px;
             width: 44px;
@@ -240,6 +249,9 @@
         <section class="map-section" id="panel-map">
             <!-- BASE LAYER: Leaflet fills the entire section -->
             <div id="leaflet-map"></div>
+
+            <!-- DARK VEIL: covers satellite, mask is punched by radar sweep -->
+            <div id="map-dark-veil"></div>
 
             <!-- OVERLAY LAYER: dot-grid, radar sweep, grid border (pointer-events:none) -->
             <div class="map-overlay">
@@ -872,27 +884,16 @@ const tacticalMap = L.map('leaflet-map', {
     scrollWheelZoom: false,
 });
 
-// CartoDB Dark Matter tiles (base — always visible)
-L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+// ESRI satellite base — always loaded, revealed by dark veil mask
+L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
     maxZoom: 19,
-    subdomains: 'abcd',
 }).addTo(tacticalMap);
 
-// Bright Voyager layer — revealed only where the radar sweep passes
-tacticalMap.createPane('radarRevealPane');
-const radarRevealPane = tacticalMap.getPane('radarRevealPane');
-radarRevealPane.style.zIndex = 201;
-radarRevealPane.style.pointerEvents = 'none';
-
-L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
-    maxZoom: 19,
-    subdomains: 'abcd',
-    pane: 'radarRevealPane',
-}).addTo(tacticalMap);
-
-// Sync mask to the CSS radar-sweep animation via rAF
-const SWEEP_MS   = 5000;
-const sweepElem  = document.querySelector('.map-radar-sweep');
+// Animate dark veil mask in sync with the CSS radar-sweep animation
+// Veil is opaque (dark) everywhere EXCEPT where the radar has just swept
+const SWEEP_MS  = 10000;
+const sweepElem = document.querySelector('.map-radar-sweep');
+const darkVeil  = document.getElementById('map-dark-veil');
 
 (function animateRadarReveal() {
     let angle = 0;
@@ -901,12 +902,11 @@ const sweepElem  = document.querySelector('.map-radar-sweep');
     if (anim && anim.currentTime != null) {
         angle = ((anim.currentTime % SWEEP_MS) / SWEEP_MS) * 360;
     }
-    // Mask shape mirrors the conic gradient on .map-radar-sweep:
-    // transparent in the "past" arc, fading to opaque at the leading edge
+    // Veil is opaque (dark) ahead of the sweep; transparent (satellite visible) behind it
     const grad = `conic-gradient(from ${angle.toFixed(1)}deg,`
-               + ` transparent 65%, rgba(0,0,0,0.35) 80%, black 95%, black 100%)`;
-    radarRevealPane.style.maskImage       = grad;
-    radarRevealPane.style.webkitMaskImage = grad;
+               + ` rgba(0,0,0,1) 60%, rgba(0,0,0,0.5) 75%, rgba(0,0,0,0) 92%, rgba(0,0,0,0) 100%)`;
+    darkVeil.style.maskImage       = grad;
+    darkVeil.style.webkitMaskImage = grad;
     requestAnimationFrame(animateRadarReveal);
 }());
 
