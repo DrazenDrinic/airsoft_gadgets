@@ -454,6 +454,7 @@ button { font-family: var(--font); cursor: pointer; border: none; background: no
     inset: 0;
     z-index: 3;
     pointer-events: none;   /* clicks pass through to Leaflet */
+    container-type: size;   /* enables cqw/cqh units for children */
 }
 
 /* Leaflet attribution */
@@ -608,6 +609,9 @@ button { font-family: var(--font); cursor: pointer; border: none; background: no
 .map-radar-sweep {
     position: absolute;
     inset: 0;
+    margin: auto;
+    width: min(85cqw, 85cqh);
+    aspect-ratio: 1 / 1;
     background: conic-gradient(
         from 0deg,
         transparent 65%,
@@ -617,10 +621,6 @@ button { font-family: var(--font); cursor: pointer; border: none; background: no
     animation: radar-sweep 5s linear infinite;
     pointer-events: none;
     border-radius: 50%;
-    margin: auto;
-    width: min(70%, 70vh);
-    height: min(70%, 70vh);
-    top: 0; bottom: 0; left: 0; right: 0;
 }
 
 /* Sector labels — direct children of .map-section, above Leaflet (z:500)
